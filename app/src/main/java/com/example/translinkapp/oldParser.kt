@@ -6,16 +6,12 @@ package com.example.translinkapp
 //import java.io.InputStream
 
 
-import android.R.attr.host
-import android.R.attr.port
-import com.fasterxml.jackson.databind.DeserializationFeature
-import com.fasterxml.jackson.databind.MapperFeature
-import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule
-import com.fasterxml.jackson.dataformat.xml.XmlMapper
-import com.fasterxml.jackson.module.kotlin.readValue
-import com.fasterxml.jackson.module.kotlin.registerKotlinModule
-import org.simpleframework.xml.Serializer
-import org.simpleframework.xml.core.Persister
+import org.xmlpull.v1.XmlPullParser
+import org.xmlpull.v1.XmlPullParserException
+import org.xmlpull.v1.XmlPullParserFactory
+import java.io.BufferedReader
+import java.io.IOException
+import java.io.InputStreamReader
 
 
 //internal val kotlinXmlMapper = XmlMapper(JacksonXmlModule().apply {
@@ -33,9 +29,31 @@ fun parseStop(xmlData: String) {
 //    val serializer: Serializer = Persister()
 //    val dataFetch = serializer.read(Stop::class.java, xmlData)
 //    println(dataFetch.city)
-    println("WE HERE " + xmlData)
-    var stop = XMLParser(stop::class.java).fromXML(xmlData)
-    println("WE AIN HERE " + stop.stop)
+//    println("WE HERE " + xmlData)
+//    var stop = XMLParser(stop::class.java).fromXML(xmlData)
+//    println("WE AIN HERE " + stop.stop)
+
+    val pullParserFactory: XmlPullParserFactory
+    try {
+        pullParserFactory = XmlPullParserFactory.newInstance()
+        val parser = pullParserFactory.newPullParser()
+        val inputStream = xmlData.byteInputStream()
+
+        parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false)
+        parser.setInput(inputStream, null)
+
+        val stops = parseXml(parser)
+        var text = ""
+
+        for(stop in stops!!) {
+            text += "name: " + stop.Routes[0]
+        }
+        println("THIS IS WHO WE ARE " + stops[0].City)
+    } catch (e: XmlPullParserException) {
+        e.printStackTrace()
+    } catch (e: IOException) {
+        e.printStackTrace()
+    }
 
 //    var factory = XmlPullParserFactory.newInstance()
 //    var parser = factory.newPullParser()
@@ -51,4 +69,44 @@ fun parseStop(xmlData: String) {
 //    }
 
 }
+
+@Throws(XmlPullParserException::class, IOException::class)
+fun parseXml(parser: XmlPullParser) : ArrayList<Stop>? {
+    var stops: ArrayList<Stop>? = null
+    var eventtype = parser.eventType
+    var stop: Stop? = null
+
+    while (eventtype != XmlPullParser.END_DOCUMENT) {
+        val name: String
+        when(eventtype) {
+            XmlPullParser.START_DOCUMENT -> stops = ArrayList()
+            XmlPullParser.START_TAG -> {
+                name = parser.name
+                if(name == "Stop") {
+                    stop = Stop()
+                } else if(stop != null) {
+                    if(name == "Name") {
+                        stop.Name = parser.nextText()
+                    } else if(name =="StopNo") {
+                        stop.StopNo = parser.nextText()
+                    } else if(name == "City") {
+                        stop.City = parser.nextText()
+                    } else if(name == "Routes") {
+                        stop.Routes.add(parser.nextText())
+                    }
+                }
+            }
+            XmlPullParser.END_TAG -> {
+                name = parser.name
+                if(name.equals("Stop", ignoreCase = true) && stop != null) {
+                    stops!!.add(stop)
+                }
+            }
+        }
+        eventtype = parser.next()
+    }
+    return stops
+}
+
+
 

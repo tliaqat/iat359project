@@ -8,25 +8,22 @@ import com.fasterxml.jackson.annotation.JsonRootName
 import org.simpleframework.xml.ElementList
 import org.simpleframework.xml.Root
 import java.util.*
+import kotlin.collections.ArrayList
 
 enum class Direction {
     NORTH, SOUTH, WEST, EAST
 }
 
-class stop(
-    @JvmField var stop: Array<Stoppe>? = null
-)
-
 //@JsonRootName("Stop")
 //@Root(name = "STOP", strict = false)
-class Stoppe(
+class Stop(
 //    @set:JsonProperty("Name")
 //    @field:ElementList(name = "Name", required = false)
     @JvmField var Name: String? = null,
 
 //    @set:JsonProperty("Routes")
 //    @field:ElementList(name = "Routes", required = false)
-    @JvmField var Routes: List<String>? = null,
+    @JvmField var Routes: ArrayList<String> = ArrayList(),
 
 //    @set:JsonProperty("StopNo")
 //    @field:ElementList(name = "StopNo", required = false)
