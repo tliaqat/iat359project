@@ -16,16 +16,12 @@ fun callStop(stop: String) {
         .url(url)
         .build()
 
-//    var x = ""
     client.newCall(request).enqueue(object : Callback {
         override fun onFailure(call: Call, e: IOException) {}
         override fun onResponse(call: Call, response: Response) {
-//            println(response.body()?.string().toString())
-//            x = response.body()?.string().toString()
             parseStop(response.body()?.string().toString())
         }
     })
-//    parseStop(x)
 
 }
 
