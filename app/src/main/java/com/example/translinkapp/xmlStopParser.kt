@@ -1,5 +1,6 @@
 package com.example.translinkapp
 
+import android.util.Log
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
 import org.xmlpull.v1.XmlPullParserFactory
@@ -16,6 +17,9 @@ fun parseStop(xmlData: String): Stop? {
         parser.setInput(inputStream, null)
 
         val stop = parseXmlStop(parser)
+        if (stop != null) {
+            Log.i("TAG", "Stop = " + stop.city.toString())
+        }
         return stop
     } catch (e: XmlPullParserException) {
         e.printStackTrace()
@@ -42,7 +46,7 @@ fun parseXmlStop(parser: XmlPullParser) : Stop? {
                     if(name == "Name") {
                         stop.name = parser.nextText()
                     } else if(name =="StopNo") {
-                        stop.stopNo = parser.nextText()
+                        stop.stopNo = "#" + parser.nextText()
                     } else if(name == "City") {
                         stop.city = parser.nextText()
                     } else if(name == "Routes") {

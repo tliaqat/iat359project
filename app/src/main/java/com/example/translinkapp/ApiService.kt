@@ -1,5 +1,6 @@
 package com.example.translinkapp
 
+import android.util.Log
 import okhttp3.*
 import java.io.IOException
 
@@ -20,11 +21,13 @@ fun callStop(stop: String): Stop {
         override fun onFailure(call: Call, e: IOException) {}
         override fun onResponse(call: Call, response: Response) {
             stop1 = parseStop(response.body()?.string().toString())!!
+            Log.i("TAG", "returned1 = " + returned.toString())
             returned = true
+            Log.i("TAG", "returned2 = " + returned.toString())
         }
     })
     while(!returned) {
-
+        Log.i("TAG", "returned3 = " + returned.toString())
     }
     return stop1
 }
@@ -45,7 +48,7 @@ fun callStopEstimates(stop: String): HashMap<NextBus, ArrayList<StopEstimate>> {
         }
     })
     while(!returned) {
-
+        Log.i("TAG", "returned3 = " + returned.toString())
     }
     return hash
 }

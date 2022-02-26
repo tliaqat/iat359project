@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">translinkApp</string>
+    <string name="search_stop">Search Stop #</string>
+    <string name="favourites">Favourites</string>
+    <string name="favourite_icon">Favourite icon</string>
+    <string name="stopno">stopNo</string>
+    <string name="stopcity">stopCity</string>
+    <string name="stoproute">stopRoute</string>
+    <string name="stopname">stopName</string>
 </resources>
