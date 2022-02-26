@@ -1,9 +1,5 @@
 package com.example.translinkapp
 
-enum class Direction {
-    NORTH, SOUTH, WEST, EAST
-}
-
 class Stop(
     @JvmField var name: String? = null,
     @JvmField var routes: String? = null,
@@ -12,7 +8,14 @@ class Stop(
 )
 
 data class StopEstimate(
-    @JvmField val time: String,
-    @JvmField var direction: Direction,
-    @JvmField val route: String
+    @JvmField var destination: String? = null,
+    @JvmField var expectedLeaveTime: String? = null,
+    @JvmField var expectedCountdown: String? = null,
+    @JvmField var lastUpdate: String? = null
+)
+
+data class NextBus(
+    @JvmField var routeNo: String? = null,
+    @JvmField var routeName: String? = null,
+    @JvmField var direction: String? = null
 )

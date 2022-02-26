@@ -2,17 +2,24 @@ package com.example.translinkapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import okhttp3.*
-import java.io.IOException
+import android.util.Log
 
 class MainActivity : AppCompatActivity() {
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        callStopEstimates("52851")
-        callStop("59316")
+
+        val mainEstimates = callStopEstimates("59316")
+        val mainStops = ArrayList<Stop>()
+
+        mainStops.add(callStop("59316"))
+
+        Log.i("TAG2", " Main stops = " + mainStops.size.toString())
+        Log.i("TAG2", "Main estimates = " + mainEstimates.size.toString())
 
     }
 

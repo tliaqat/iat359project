@@ -5,7 +5,7 @@ import org.xmlpull.v1.XmlPullParserException
 import org.xmlpull.v1.XmlPullParserFactory
 import java.io.IOException
 
-fun parseStop(xmlData: String) {
+fun parseStop(xmlData: String): Stop? {
     val pullParserFactory: XmlPullParserFactory
     try {
         pullParserFactory = XmlPullParserFactory.newInstance()
@@ -15,30 +15,25 @@ fun parseStop(xmlData: String) {
         parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false)
         parser.setInput(inputStream, null)
 
-        val stops = parseXmlStop(parser)
-        var text = ""
-
-        for(stop in stops!!) {
-            text += "name: " + stop.routes
-        }
-        println("THIS IS WHO WE ARE " + stops[0].city)
+        val stop = parseXmlStop(parser)
+        return stop
     } catch (e: XmlPullParserException) {
         e.printStackTrace()
     } catch (e: IOException) {
         e.printStackTrace()
     }
+    return Stop()
 }
 
 @Throws(XmlPullParserException::class, IOException::class)
-fun parseXmlStop(parser: XmlPullParser) : ArrayList<Stop>? {
-    var stops: ArrayList<Stop>? = null
+fun parseXmlStop(parser: XmlPullParser) : Stop? {
     var eventtype = parser.eventType
     var stop: Stop? = null
 
     while (eventtype != XmlPullParser.END_DOCUMENT) {
         val name: String
         when(eventtype) {
-            XmlPullParser.START_DOCUMENT -> stops = ArrayList()
+            XmlPullParser.START_DOCUMENT -> stop = Stop()
             XmlPullParser.START_TAG -> {
                 name = parser.name
                 if(name == "Stop") {
@@ -56,15 +51,11 @@ fun parseXmlStop(parser: XmlPullParser) : ArrayList<Stop>? {
                 }
             }
             XmlPullParser.END_TAG -> {
-                name = parser.name
-                if(name.equals("Stop", ignoreCase = true) && stop != null) {
-                    stops!!.add(stop)
-                }
             }
         }
         eventtype = parser.next()
     }
-    return stops
+    return stop
 }
 
 
