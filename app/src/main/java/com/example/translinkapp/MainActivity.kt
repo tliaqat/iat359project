@@ -1,7 +1,11 @@
 package com.example.translinkapp
 
+import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.view.KeyEvent
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -45,6 +49,8 @@ class MainActivity : AppCompatActivity() {
                 if(addToList) {
                     myStops.add(s)
                     toastMessage("ADDED TO YOUR LIST", this)
+                    hideKeyboard(currentFocus ?: View(this))
+
                 }
             } else {
                 toastMessage("INVALID STOP #", this)
@@ -53,5 +59,10 @@ class MainActivity : AppCompatActivity() {
         }
         return false
     }
+    fun Context.hideKeyboard(view: View) {
+        val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
 }
 
