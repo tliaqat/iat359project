@@ -1,15 +1,16 @@
 package com.example.translinkapp
 
+import android.content.Context
 import android.util.Log
 import okhttp3.*
 import java.io.IOException
 
 private val client = OkHttpClient()
-private val base = "https://api.translink.ca/rttiapi/v1/"
+private val base = "https://api.translink.ca/rttiapi/v1/stops/"
 private val key = "?apikey=7E396B1FZwGjLKFn6mbd"
 
-fun callStop(stop: String): Stop {
-    val url = base + "stops/" + stop + key
+fun callStop(stop: String, context: Context): Stop {
+    val url = base + stop + key
 
     val request = Request.Builder()
         .url(url)
@@ -17,23 +18,25 @@ fun callStop(stop: String): Stop {
 
     var stop1 = Stop()
     var returned = false
+    var failed = false
     client.newCall(request).enqueue(object : Callback {
-        override fun onFailure(call: Call, e: IOException) {}
+        override fun onFailure(call: Call, e: IOException) {failed = true}
         override fun onResponse(call: Call, response: Response) {
-            stop1 = parseStop(response.body()?.string().toString())!!
-            Log.i("TAG", "returned1 = " + returned.toString())
+            stop1 = parseStop(response.body()?.string().toString(), context)
             returned = true
-            Log.i("TAG", "returned2 = " + returned.toString())
         }
     })
+    if(failed) {
+        return Stop()
+    }
     while(!returned) {
-        Log.i("TAG", "returned3 = " + returned.toString())
+        Log.i("TAG", "Busywait")
     }
     return stop1
 }
 
 fun callStopEstimates(stop: String): HashMap<NextBus, ArrayList<StopEstimate>> {
-    val url = base + "stops/" + stop + "/estimates" + key
+    val url = base + stop + "/estimates" + key
 
     val request = Request.Builder()
         .url(url)
@@ -48,7 +51,7 @@ fun callStopEstimates(stop: String): HashMap<NextBus, ArrayList<StopEstimate>> {
         }
     })
     while(!returned) {
-        Log.i("TAG", "returned3 = " + returned.toString())
+        Log.i("TAG", "Busywait")
     }
     return hash
 }

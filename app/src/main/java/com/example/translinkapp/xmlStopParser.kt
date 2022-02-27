@@ -1,12 +1,13 @@
 package com.example.translinkapp
 
+import android.content.Context
 import android.util.Log
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
 import org.xmlpull.v1.XmlPullParserFactory
 import java.io.IOException
 
-fun parseStop(xmlData: String): Stop? {
+fun parseStop(xmlData: String, context: Context): Stop {
     val pullParserFactory: XmlPullParserFactory
     try {
         pullParserFactory = XmlPullParserFactory.newInstance()
@@ -17,9 +18,7 @@ fun parseStop(xmlData: String): Stop? {
         parser.setInput(inputStream, null)
 
         val stop = parseXmlStop(parser)
-        if (stop != null) {
-            Log.i("TAG", "Stop = " + stop.city.toString())
-        }
+        stop!!.isFavourite = isFavouriteStop(stop.stopNo, context)
         return stop
     } catch (e: XmlPullParserException) {
         e.printStackTrace()
@@ -27,6 +26,19 @@ fun parseStop(xmlData: String): Stop? {
         e.printStackTrace()
     }
     return Stop()
+}
+
+fun isFavouriteStop(stopNo: String?, context: Context): Boolean {
+    val sharedPreference =  context.getSharedPreferences("PREFERENCE_NAME",Context.MODE_PRIVATE)
+    val x = sharedPreference.getStringSet("favs", mutableSetOf())
+    if (x != null) {
+        for (stop in x) {
+            if (stopNo == stop) {
+                return true
+            }
+        }
+    }
+    return false
 }
 
 @Throws(XmlPullParserException::class, IOException::class)

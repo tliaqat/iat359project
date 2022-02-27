@@ -1,5 +1,6 @@
 package com.example.translinkapp
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,12 @@ class EstimatesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bindView(nextBus: NextBus, hash: HashMap<NextBus, ArrayList<StopEstimate>>) {
         nextBusTitle.text = "${nextBus.routeNo} ${nextBus.routeName}"
         nextBusDirection.text = nextBus.direction.toString()
+        when(nextBus.direction) {
+            "NORTH" -> nextBusDirection.setTextColor(Color.RED)
+            "EAST" -> nextBusDirection.setTextColor(Color.CYAN)
+            "SOUTH" -> nextBusDirection.setTextColor(Color.BLUE)
+            "WEST" -> nextBusDirection.setTextColor(Color.GREEN)
+        }
 
         val timesRv = itemView.findViewById<RecyclerView>(R.id.timesRV)
         timesRv.layoutManager = LinearLayoutManager(itemView.context)

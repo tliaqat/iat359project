@@ -14,7 +14,7 @@ class TimesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     fun bindView(time: StopEstimate) {
         timesDestination.text = time.destination
-        timesExpectedLeave.text = time.expectedLeaveTime.toString().take(7)
+        timesExpectedLeave.text = "Arrives: " + time.expectedLeaveTime.toString().take(7)
         timesCountdown.text = time.expectedCountdown + "min"
         timesLastUpdated.text = "Last Updated: " + time.lastUpdate
     }

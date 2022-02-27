@@ -20,7 +20,7 @@ class EstimatesActivity : AppCompatActivity() {
 
         val myEstimates = callStopEstimates(stop)
 
-        findViewById<TextView>(R.id.estimateStopNo).text = stop
+        findViewById<TextView>(R.id.estimateStopNo).text = "Stop #" + stop
 
         val nextBusRv = findViewById<RecyclerView>(R.id.nextBusRV)
         nextBusRv.layoutManager = LinearLayoutManager(this)

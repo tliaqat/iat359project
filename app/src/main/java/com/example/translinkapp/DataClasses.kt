@@ -4,7 +4,8 @@ class Stop(
     @JvmField var name: String? = null,
     @JvmField var routes: String? = null,
     @JvmField var stopNo: String? = null,
-    @JvmField var city: String? = null
+    @JvmField var city: String? = null,
+    @JvmField var isFavourite: Boolean = false
 )
 
 data class StopEstimate(

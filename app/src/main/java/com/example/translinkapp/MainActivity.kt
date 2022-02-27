@@ -1,15 +1,9 @@
 package com.example.translinkapp
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.view.KeyEvent
+import android.widget.EditText
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -21,30 +15,43 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        callStopEstimates("59316")
+        for(stop in getFavourites(this)!!) {
+            myStops.add(callStop(stop, this))
+        }
 
-        myStops.add(callStop("59316"))
-        myStops.add(callStop("52851"))
-        myStops.add(callStop("60980"))
-
-        Log.i("TAG2", " Main stops = " + myStops[0].stopNo.toString())
+        val searchStopNo = findViewById<EditText>(R.id.myStopNo)
+        searchStopNo.setOnKeyListener { v, keyCode, event ->
+            onKeyListener(keyCode, event, searchStopNo)
+        }
 
         val favRv = findViewById<RecyclerView>(R.id.favRecyclerView)
         favRv.layoutManager = LinearLayoutManager(this)
-        favRv.adapter = FavouriteAdapter(myStops)
-
-        val button = findViewById<Button>(R.id.button)
-
-        button.setOnClickListener {
-            goToEstimates()
-        }
+        favRv.adapter = FavouriteAdapter(myStops, this)
 
     }
 
-    private fun goToEstimates() {
-        val intent = Intent(this, EstimatesActivity::class.java)
-        intent.putExtra("stop", "59316")
-        startActivity(intent)
+    private fun onKeyListener(keyCode: Int, event: KeyEvent, search: EditText) : Boolean {
+        if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
+            val s = callStop(search.text.toString(), this)
+            var addToList = true
+            if(s.name != null) {
+                for(x in myStops) {
+                    if(s.stopNo == x.stopNo) {
+                        toastMessage("Already in your list", this)
+                        addToList = false
+                        break
+                    }
+                }
+                if(addToList) {
+                    myStops.add(s)
+                    toastMessage("ADDED TO YOUR LIST", this)
+                }
+            } else {
+                toastMessage("INVALID STOP #", this)
+            }
+            return true
+        }
+        return false
     }
 }
 
