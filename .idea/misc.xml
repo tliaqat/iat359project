@@ -5,8 +5,11 @@
       <map>
         <entry key="app/src/main/res/drawable/ic_bookmark_shapes_svgrepo_com.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_bookmark_svgrepo_com.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_estimates.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/next_bus_section.xml" value="0.33" />
         <entry key="app/src/main/res/layout/stop_row.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/times_row.xml" value="0.23802083333333332" />
       </map>
     </option>
   </component>

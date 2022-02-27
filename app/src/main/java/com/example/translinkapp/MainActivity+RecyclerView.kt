@@ -17,7 +17,7 @@ class FavouriteViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         stopName.text = stop.name
         stopRoutes.text = stop.routes
         stopCity.text = stop.city
-        stopNo.text = stop.stopNo
+        stopNo.text = "#" + stop.stopNo
     }
 }
 

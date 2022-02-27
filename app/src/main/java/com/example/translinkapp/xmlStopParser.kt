@@ -46,7 +46,7 @@ fun parseXmlStop(parser: XmlPullParser) : Stop? {
                     if(name == "Name") {
                         stop.name = parser.nextText()
                     } else if(name =="StopNo") {
-                        stop.stopNo = "#" + parser.nextText()
+                        stop.stopNo = parser.nextText()
                     } else if(name == "City") {
                         stop.city = parser.nextText()
                     } else if(name == "Routes") {

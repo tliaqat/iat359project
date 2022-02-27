@@ -7,4 +7,5 @@
     <string name="stopcity">stopCity</string>
     <string name="stoproute">stopRoute</string>
     <string name="stopname">stopName</string>
+    <string name="button">Button</string>
 </resources>
