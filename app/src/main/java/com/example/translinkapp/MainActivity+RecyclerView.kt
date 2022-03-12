@@ -29,17 +29,20 @@ class FavouriteViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         fav.setOnClickListener {
             stop.isFavourite = !stop.isFavourite
+            if(stop.isFavourite) {
+                toastMessage("Favourited", context)
+            } else {
+                toastMessage("Unfavourited", context)
+            }
             fav.setImageResource(getFavImage(stop, context))
         }
     }
 
     private fun getFavImage(stop: Stop, context: Context): Int {
         if(stop.isFavourite) {
-//            toastMessage("Favourited", context)
             addToSharedPref(stop, context)
             return R.drawable.btn_star_big_on_pressed
         }
-//        toastMessage("Unfavourited", context)
         removeFromSharedPref(stop, context)
         return R.drawable.btn_star_big_off_disable
     }
